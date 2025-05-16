@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "255768526665",
+    "project_id": "huertix-project",
+    "storage_bucket": "huertix-project.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:255768526665:android:bed6b37564212ca7b1e498",
+        "android_client_info": {
+          "package_name": "com.example.huertix_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApuVG-q1mis8eCvZl8s_DY5rW8O-izlks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
