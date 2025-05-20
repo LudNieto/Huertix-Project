@@ -1,33 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/auth_screen_card.dart';
-import 'home_screen.dart';
-import 'register_screen.dart';
+import 'auth_screen_card.dart';
+import 'login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _isLoading = false;
   bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
-  void _login() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+  void _register() async {
+    if (_nameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Por favor completa todos los campos')),
+      );
+      return;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Las contraseñas no coinciden')),
       );
       return;
     }
@@ -45,9 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (context) => HomeScreen(email: _emailController.text),
-      ),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -59,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Iniciar Sesión',
+            'Crear Cuenta',
             style: GoogleFonts.jua(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -67,6 +79,21 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           const SizedBox(height: 24),
+          TextField(
+            controller: _nameController,
+            decoration: InputDecoration(
+              labelText: 'Nombre completo',
+              prefixIcon: const Icon(Icons.person, color: Colors.blue),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.blue, width: 2),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
           TextField(
             controller: _emailController,
             decoration: InputDecoration(
@@ -109,16 +136,32 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 8),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                // Navegar a pantalla de recuperación de contraseña
-              },
-              child: const Text(
-                '¿Olvidaste tu contraseña?',
-                style: TextStyle(color: Colors.blue),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _confirmPasswordController,
+            obscureText: _obscureConfirmPassword,
+            decoration: InputDecoration(
+              labelText: 'Confirmar contraseña',
+              prefixIcon: const Icon(Icons.lock_outline, color: Colors.blue),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  _obscureConfirmPassword
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: Colors.blue,
+                ),
+                onPressed: () {
+                  setState(() {
+                    _obscureConfirmPassword = !_obscureConfirmPassword;
+                  });
+                },
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(color: Colors.blue, width: 2),
               ),
             ),
           ),
@@ -126,40 +169,38 @@ class _LoginScreenState extends State<LoginScreen> {
           _isLoading
               ? const CircularProgressIndicator(color: Colors.blue)
               : SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _login,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Text(
-                      'Ingresar',
-                      style: GoogleFonts.jua(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: _register,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
+                  child: Text(
+                    'Registrarse',
+                    style: GoogleFonts.jua(fontSize: 20, color: Colors.white),
+                  ),
                 ),
+              ),
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('¿No tienes una cuenta? '),
+              const Text('¿Ya tienes una cuenta? '),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const RegisterScreen()),
+                      builder: (context) => const LoginScreen(),
+                    ),
                   );
                 },
                 child: const Text(
-                  'Regístrate',
+                  'Inicia sesión',
                   style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.bold,

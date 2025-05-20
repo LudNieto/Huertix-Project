@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final String email;
+  final String? email;
 
-  const HomeScreen({super.key, required this.email});
+  const HomeScreen({super.key, this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,8 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 20),
                     height: size.height * 0.1,
                     child: Image.asset(
-                        'assets/logo.png'), // Reemplaza con tu imagen
+                      'assets/logo.png',
+                    ), // Reemplaza con tu imagen
                   ),
                 ],
               ),
