@@ -18,8 +18,10 @@ class AuthScreenWithCard extends StatelessWidget {
     this.cardColor = Colors.white,
     this.cardBorderRadius,
     this.cardShadow,
-  }) : assert(cardWidthFactor > 0.0 && cardWidthFactor <= 1.0,
-            'El factor de ancho debe estar entre 0.0 y 1.0');
+  }) : assert(
+         cardWidthFactor > 0.0 && cardWidthFactor <= 1.0,
+         'El factor de ancho debe estar entre 0.0 y 1.0',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +29,19 @@ class AuthScreenWithCard extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
-          // Fondo de imagen
           Positioned.fill(
-            child: Image.asset(
-              backgroundImagePath,
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset(backgroundImagePath, fit: BoxFit.cover),
           ),
-
-          // Capa semitransparente para mejorar legibilidad
           Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.3),
-            ),
+            child: Container(color: Colors.black.withOpacity(0.3)),
           ),
-
-          // Contenido principal
           Center(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Card(
                   margin: EdgeInsets.zero,
-                  color: cardColor,
+                  color: const Color(0xC1EBEFEE),
                   shape: RoundedRectangleBorder(
                     borderRadius: cardBorderRadius ?? BorderRadius.circular(20),
                   ),

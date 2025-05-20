@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return AuthScreenWithCard(
-      backgroundImagePath: 'assets/auth_background.jpg',
+      backgroundImagePath: 'assets/images/login_bg.jpg',
       cardChild: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
             style: GoogleFonts.jua(
               fontSize: 28,
               fontWeight: FontWeight.bold,
-              color: Colors.blue,
+              color: Color(0xFF085430),
             ),
           ),
           const SizedBox(height: 24),
@@ -71,13 +71,16 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: _emailController,
             decoration: InputDecoration(
               labelText: 'Correo electrónico',
-              prefixIcon: const Icon(Icons.email, color: Colors.blue),
+              prefixIcon: const Icon(Icons.email, color: Color(0xFF085430)),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.blue, width: 2),
+                borderSide: const BorderSide(
+                  color: Color(0xFF085430),
+                  width: 2,
+                ),
               ),
             ),
             keyboardType: TextInputType.emailAddress,
@@ -88,11 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
             obscureText: _obscurePassword,
             decoration: InputDecoration(
               labelText: 'Contraseña',
-              prefixIcon: const Icon(Icons.lock, color: Colors.blue),
+              prefixIcon: const Icon(Icons.lock, color: Color(0xFF085430)),
               suffixIcon: IconButton(
                 icon: Icon(
                   _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.blue,
+                  color: Color(0xFF085430),
                 ),
                 onPressed: () {
                   setState(() {
@@ -105,33 +108,23 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(color: Colors.blue, width: 2),
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () {
-                // Navegar a pantalla de recuperación de contraseña
-              },
-              child: const Text(
-                '¿Olvidaste tu contraseña?',
-                style: TextStyle(color: Colors.blue),
+                borderSide: const BorderSide(
+                  color: Color(0xFF085430),
+                  width: 2,
+                ),
               ),
             ),
           ),
           const SizedBox(height: 24),
           _isLoading
-              ? const CircularProgressIndicator(color: Colors.blue)
+              ? const CircularProgressIndicator(color: Color(0xFF085430))
               : SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
                   onPressed: _login,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
+                    backgroundColor: Color(0xFF085430),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -159,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: const Text(
                   'Regístrate',
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: Color(0xFF085430),
                     fontWeight: FontWeight.bold,
                   ),
                 ),

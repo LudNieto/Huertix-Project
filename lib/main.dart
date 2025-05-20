@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Login Estructurado',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const LoginScreen(),
