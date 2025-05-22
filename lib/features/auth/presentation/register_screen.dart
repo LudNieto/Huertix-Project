@@ -1,7 +1,11 @@
+import 'dart:ui' as ui; // Necesario para BackdropFilter
 import 'package:flutter/material.dart';
+import 'package:huertix_project/features/auth/config/auth_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'auth_screen_card.dart';
-import 'login_screen.dart';
+
+
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -11,221 +15,318 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _nameController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _fullNameController = TextEditingController(); 
   final _emailController = TextEditingController();
+  final _phoneController = TextEditingController(); 
+  final _zoneController = TextEditingController(); 
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-  bool _isLoading = false;
+  final _experienceController = TextEditingController(); 
+
+
+  final List<String> _allAvailableDays = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  List<String> _selectedDays = [];
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
 
+  static const Color primaryAuthColor = Color(0xFF085430);
+
   @override
-  void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<AuthProvider>(context, listen: false).resetError();
+    });
   }
 
-  void _register() async {
-    if (_nameController.text.isEmpty ||
-        _emailController.text.isEmpty ||
-        _passwordController.text.isEmpty ||
-        _confirmPasswordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor completa todos los campos')),
-      );
-      return;
+  void _register(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      if (_selectedDays.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Por favor, selecciona al menos un día de disponibilidad.')),
+        );
+        return;
+      }
+
+      context.read<AuthProvider>().registerUser(
+            email: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
+            fullName: _fullNameController.text.trim(),
+            phone: _phoneController.text.trim(),
+            residentialZone: _zoneController.text.trim(),
+            availabilityDays: _selectedDays,
+            previousExperience: _experienceController.text.trim().isNotEmpty
+                ? _experienceController.text.trim()
+                : null,
+          );
     }
+  }
 
-    if (_passwordController.text != _confirmPasswordController.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Las contraseñas no coinciden')),
-      );
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-    });
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+  InputDecoration _buildInputDecoration(String labelText, IconData prefixIconData) {
+    return InputDecoration(
+      labelText: labelText,
+      prefixIcon: Icon(prefixIconData, color: primaryAuthColor),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.r),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10.r),
+        borderSide: const BorderSide(
+          color: primaryAuthColor,
+          width: 2.0,
+        ),
+      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h)
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return AuthScreenWithCard(
-      backgroundImagePath: 'assets/images/register_bg.jpeg',
-      cardChild: Column(
-        mainAxisSize: MainAxisSize.min,
+    final authProvider = context.watch<AuthProvider>();
+
+    if (authProvider.status == AuthStatus.failure && authProvider.errorMessage != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(authProvider.errorMessage!),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+        context.read<AuthProvider>().resetError();
+      });
+    }
+    // Si el registro es exitoso, AuthWrapper se encargará de la navegación a HomePage.
+    // Podrías opcionalmente mostrar un SnackBar de éxito aquí también antes de que AuthWrapper navegue.
+    if (authProvider.status == AuthStatus.authenticated) {
+         WidgetsBinding.instance.addPostFrameCallback((_) {
+             ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                    content: Text('¡Registro exitoso! Iniciando sesión...'),
+                    backgroundColor: Colors.green,
+                ),
+            );
+            // AuthWrapper se encargará de la navegación a HomePage
+         });
+    }
+
+
+    return Scaffold(
+      body: Stack(
         children: [
-          Text(
-            'Crear Cuenta',
-            style: GoogleFonts.jua(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF085430),
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/register_bg.jpeg', // Asegúrate que esta imagen exista
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(color: Colors.grey[200]);
+              },
             ),
           ),
-          const SizedBox(height: 24),
-          TextField(
-            controller: _nameController,
-            decoration: InputDecoration(
-              labelText: 'Nombre completo',
-              prefixIcon: const Icon(Icons.person, color: Color(0xFF085430)),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Color(0xFF085430),
-                  width: 2,
-                ),
+          Positioned.fill(
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(sigmaX: 1.5, sigmaY: 1.5),
+              child: Container(
+                color: Colors.black.withOpacity(0.2),
               ),
             ),
           ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _emailController,
-            decoration: InputDecoration(
-              labelText: 'Correo electrónico',
-              prefixIcon: const Icon(Icons.email, color: Color(0xFF085430)),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Color(0xFF085430),
-                  width: 2,
+          Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(20.w),
+              child: Card(
+                elevation: 8.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.r),
                 ),
-              ),
-            ),
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _passwordController,
-            obscureText: _obscurePassword,
-            decoration: InputDecoration(
-              labelText: 'Contraseña',
-              prefixIcon: const Icon(Icons.lock, color: Color(0xFF085430)),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                  color: Color(0xFF085430),
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscurePassword = !_obscurePassword;
-                  });
-                },
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Color(0xFF085430),
-                  width: 2,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _confirmPasswordController,
-            obscureText: _obscureConfirmPassword,
-            decoration: InputDecoration(
-              labelText: 'Confirmar contraseña',
-              prefixIcon: const Icon(
-                Icons.lock_outline,
-                color: Color(0xFF085430),
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscureConfirmPassword
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                  color: Color(0xFF085430),
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscureConfirmPassword = !_obscureConfirmPassword;
-                  });
-                },
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Color(0xFF085430),
-                  width: 2,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 24),
-          _isLoading
-              ? const CircularProgressIndicator(color: Color(0xFF085430))
-              : SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _register,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF085430),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 28.h),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Crear Cuenta',
+                          style: GoogleFonts.jua(
+                            fontSize: 28.sp,
+                            fontWeight: FontWeight.bold,
+                            color: primaryAuthColor,
+                          ),
+                        ),
+                        SizedBox(height: 20.h),
+                        TextFormField(
+                          controller: _fullNameController,
+                          decoration: _buildInputDecoration('Nombre completo', Icons.person),
+                          style: TextStyle(fontSize: 15.sp),
+                          validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+                        ),
+                        SizedBox(height: 12.h),
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: _buildInputDecoration('Correo electrónico', Icons.email),
+                          style: TextStyle(fontSize: 15.sp),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) return 'Campo requerido';
+                            if (!value.contains('@') || !value.contains('.')) return 'Correo inválido';
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        TextFormField(
+                          controller: _phoneController,
+                          decoration: _buildInputDecoration('Teléfono', Icons.phone),
+                           style: TextStyle(fontSize: 15.sp),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+                        ),
+                        SizedBox(height: 12.h),
+                        TextFormField(
+                          controller: _zoneController,
+                          decoration: _buildInputDecoration('Zona de residencia/cercanía', Icons.location_city),
+                           style: TextStyle(fontSize: 15.sp),
+                          validator: (value) => value!.isEmpty ? 'Campo requerido' : null,
+                        ),
+                        SizedBox(height: 12.h),
+                        TextFormField(
+                          controller: _passwordController,
+                          obscureText: _obscurePassword,
+                          decoration: _buildInputDecoration('Contraseña', Icons.lock).copyWith(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                                color: primaryAuthColor,
+                              ),
+                              onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                            ),
+                          ),
+                           style: TextStyle(fontSize: 15.sp),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) return 'Campo requerido';
+                            if (value.length < 6) return 'Mínimo 6 caracteres';
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        TextFormField(
+                          controller: _confirmPasswordController,
+                          obscureText: _obscureConfirmPassword,
+                          decoration: _buildInputDecoration('Confirmar contraseña', Icons.lock_outline).copyWith(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                                color: primaryAuthColor,
+                              ),
+                              onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                            ),
+                          ),
+                           style: TextStyle(fontSize: 15.sp),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) return 'Campo requerido';
+                            if (value != _passwordController.text) return 'Las contraseñas no coinciden';
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 12.h),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: EdgeInsets.only(top:8.h, bottom: 4.h, left: 4.w),
+                            child: Text('Días de Disponibilidad:', style: TextStyle(fontSize: 15.sp, color: Colors.black54, fontWeight: FontWeight.w500)),
+                          )
+                        ),
+                        Wrap(
+                          spacing: 5.w,
+                          runSpacing: 0,
+                          children: _allAvailableDays.map((day) {
+                            return ChoiceChip(
+                              label: Text(day, style: TextStyle(fontSize: 12.sp)),
+                              selected: _selectedDays.contains(day),
+                              selectedColor: primaryAuthColor.withOpacity(0.8),
+                              labelStyle: TextStyle(color: _selectedDays.contains(day) ? Colors.white : Colors.black54),
+                              checkmarkColor: Colors.white,
+                              onSelected: (selected) {
+                                setState(() {
+                                  if (selected) {
+                                    _selectedDays.add(day);
+                                  } else {
+                                    _selectedDays.remove(day);
+                                  }
+                                });
+                              },
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(height: 12.h),
+                        TextFormField(
+                          controller: _experienceController,
+                          decoration: _buildInputDecoration('Experiencia Previa (Opcional)', Icons.eco),
+                          style: TextStyle(fontSize: 15.sp),
+                          maxLines: 2,
+                        ),
+                        SizedBox(height: 20.h),
+                        authProvider.isLoading
+                            ? const CircularProgressIndicator(color: primaryAuthColor)
+                            : SizedBox(
+                                width: double.infinity,
+                                height: 50.h,
+                                child: ElevatedButton(
+                                  onPressed: () => _register(context),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: primaryAuthColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.r),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Registrarse',
+                                    style: GoogleFonts.jua(fontSize: 20.sp, color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                        SizedBox(height: 12.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('¿Ya tienes una cuenta?', style: TextStyle(fontSize: 14.sp)),
+                            TextButton(
+                              onPressed: authProvider.isLoading ? null : () {
+                                Navigator.pop(context); // Vuelve a la pantalla de Login
+                              },
+                              child: Text(
+                                'Inicia sesión',
+                                style: TextStyle(
+                                  color: primaryAuthColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  child: Text(
-                    'Registrarse',
-                    style: GoogleFonts.jua(fontSize: 20, color: Colors.white),
-                  ),
                 ),
               ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('¿Ya tienes una cuenta? '),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Inicia sesión',
-                  style: TextStyle(
-                    color: Color(0xFF085430),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _zoneController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    _experienceController.dispose();
+    super.dispose();
   }
 }

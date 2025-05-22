@@ -1,5 +1,10 @@
+import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:huertix_project/features/auth/config/auth_provider.dart';
+import 'package:provider/provider.dart';
 import 'auth_screen_card.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
@@ -12,10 +17,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLoading = false;
   bool _obscurePassword = true;
+
+  static const Color primaryAuthColor = Color(0xFF085430);
 
   @override
   void dispose() {
@@ -24,140 +31,234 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _login() async {
-    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor completa todos los campos')),
+  void _login(BuildContext context) {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthProvider>().loginUser(
+        _emailController.text.trim(),
+        _passwordController.text.trim(),
       );
-      return;
     }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-    });
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => HomeScreen(email: _emailController.text),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return AuthScreenWithCard(
-      backgroundImagePath: 'assets/images/login_bg.jpg',
-      cardChild: Column(
-        mainAxisSize: MainAxisSize.min,
+    final authProvider = context.watch<AuthProvider>();
+
+    if (authProvider.status == AuthStatus.failure &&
+        authProvider.errorMessage != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(authProvider.errorMessage!),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+        context.read<AuthProvider>().resetError();
+      });
+    }
+
+    return Scaffold(
+      body: Stack(
         children: [
-          Text(
-            'Iniciar Sesión',
-            style: GoogleFonts.jua(
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF085430),
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/login_bg.jpg',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(color: Colors.grey[200]);
+              },
             ),
           ),
-          const SizedBox(height: 24),
-          TextField(
-            controller: _emailController,
-            decoration: InputDecoration(
-              labelText: 'Correo electrónico',
-              prefixIcon: const Icon(Icons.email, color: Color(0xFF085430)),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+
+          Positioned.fill(
+            child: BackdropFilter(
+              filter: ui.ImageFilter.blur(
+                sigmaX: 1.5,
+                sigmaY: 1.5,
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Color(0xFF085430),
-                  width: 2,
-                ),
-              ),
-            ),
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _passwordController,
-            obscureText: _obscurePassword,
-            decoration: InputDecoration(
-              labelText: 'Contraseña',
-              prefixIcon: const Icon(Icons.lock, color: Color(0xFF085430)),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                  color: Color(0xFF085430),
-                ),
-                onPressed: () {
-                  setState(() {
-                    _obscurePassword = !_obscurePassword;
-                  });
-                },
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: const BorderSide(
-                  color: Color(0xFF085430),
-                  width: 2,
-                ),
+              child: Container(
+                color: Colors.black.withOpacity(
+                  0.2,
+                ), // Ajusta la opacidad del overlay
               ),
             ),
           ),
-          const SizedBox(height: 24),
-          _isLoading
-              ? const CircularProgressIndicator(color: Color(0xFF085430))
-              : SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: _login,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF085430),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+
+          // 3. Contenido Centrado (Tarjeta con el formulario)
+          Center(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(20.w),
+              child: Card(
+                elevation: 8.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24.w,
+                    vertical: 32.h,
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisSize:
+                          MainAxisSize
+                              .min, // Para que la tarjeta se ajuste al contenido
+                      children: [
+                        Text(
+                          'Iniciar Sesión',
+                          style: GoogleFonts.jua(
+                            fontSize: 28.sp,
+                            fontWeight: FontWeight.bold,
+                            color: primaryAuthColor,
+                          ),
+                        ),
+                        SizedBox(height: 24.h),
+                        TextFormField(
+                          controller: _emailController,
+                          decoration: InputDecoration(
+                            labelText: 'Correo electrónico',
+                            prefixIcon: const Icon(
+                              Icons.email,
+                              color: primaryAuthColor,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              borderSide: const BorderSide(
+                                color: primaryAuthColor,
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 15.h,
+                            ),
+                          ),
+                          style: TextStyle(fontSize: 16.sp),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, ingresa tu correo';
+                            }
+                            if (!value.contains('@') || !value.contains('.')) {
+                              return 'Ingresa un correo válido';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.h),
+                        TextFormField(
+                          controller: _passwordController,
+                          obscureText: _obscurePassword,
+                          decoration: InputDecoration(
+                            labelText: 'Contraseña',
+                            prefixIcon: const Icon(
+                              Icons.lock,
+                              color: primaryAuthColor,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscurePassword
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: primaryAuthColor,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscurePassword = !_obscurePassword;
+                                });
+                              },
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                              borderSide: const BorderSide(
+                                color: primaryAuthColor,
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 15.h,
+                            ),
+                          ),
+                          style: TextStyle(fontSize: 16.sp),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, ingresa tu contraseña';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 24.h),
+                        authProvider.isLoading
+                            ? const CircularProgressIndicator(
+                              color: primaryAuthColor,
+                            )
+                            : SizedBox(
+                              width: double.infinity,
+                              height: 50.h,
+                              child: ElevatedButton(
+                                onPressed: () => _login(context),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: primaryAuthColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Ingresar',
+                                  style: GoogleFonts.jua(
+                                    fontSize: 20.sp,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        SizedBox(height: 16.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              '¿No tienes una cuenta?',
+                              style: TextStyle(fontSize: 14.sp),
+                            ),
+                            TextButton(
+                              onPressed:
+                                  authProvider.isLoading
+                                      ? null
+                                      : () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) =>
+                                                    const RegisterScreen(),
+                                          ),
+                                        );
+                                      },
+                              child: Text(
+                                'Regístrate',
+                                style: TextStyle(
+                                  color: primaryAuthColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  child: Text(
-                    'Ingresar',
-                    style: GoogleFonts.jua(fontSize: 20, color: Colors.white),
-                  ),
                 ),
               ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text('¿No tienes una cuenta? '),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterScreen(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Regístrate',
-                  style: TextStyle(
-                    color: Color(0xFF085430),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
