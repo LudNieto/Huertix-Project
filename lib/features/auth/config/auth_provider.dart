@@ -118,8 +118,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void resetError() {
-    // ... (sin cambios)
-     if (_errorMessage != null || _status == AuthStatus.failure) {
+    if (_errorMessage != null || _status == AuthStatus.failure) {
       _errorMessage = null;
       if (_status == AuthStatus.failure) {
           _status = _user != null ? AuthStatus.authenticated : AuthStatus.unauthenticated;
