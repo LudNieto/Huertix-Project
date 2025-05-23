@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huertix_project/features/auth/config/auth_provider.dart';
-import 'package:huertix_project/features/auth/presentation/auth_screen_card.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/auth_screen_card.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _experienceController = TextEditingController();
 
   final List<String> _allAvailableDays = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-  List<String> _selectedDays = [];
+  final List<String> _selectedDays = [];
 
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
@@ -86,13 +86,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         context.read<AuthProvider>().resetError();
       });
     }
-     if (authProvider.status == AuthStatus.authenticated) {
-         WidgetsBinding.instance.addPostFrameCallback((_) {
-             ScaffoldMessenger.of(context).showSnackBar(
+    if (authProvider.status == AuthStatus.authenticated) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('¡Registro exitoso! Iniciando sesión...'), backgroundColor: Colors.green),
             );
-            // AuthWrapper se encargará de la navegación
-         });
+        });
     }
 
     Widget formContent = Form(
