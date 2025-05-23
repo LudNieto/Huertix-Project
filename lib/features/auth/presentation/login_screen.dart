@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:huertix_project/features/auth/config/auth_provider.dart';
-import 'package:huertix_project/features/auth/presentation/auth_screen_card.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/auth_screen_card.dart';
 import 'package:huertix_project/features/auth/presentation/register_screen.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/primary_auth_button.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,62 +69,43 @@ class _LoginScreenState extends State<LoginScreen> {
               color: primaryAuthColor,
             ),
           ),
+
           SizedBox(height: 24.h),
-          TextFormField(
+
+          AuthTextFormField(
             controller: _emailController,
-            decoration: InputDecoration(
-              labelText: 'Correo electrónico',
-              prefixIcon: const Icon(Icons.email, color: primaryAuthColor),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.r),
-                borderSide: const BorderSide(color: primaryAuthColor, width: 2.0),
-              ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
-            ),
-            style: TextStyle(fontSize: 16.sp),
-            keyboardType: TextInputType.emailAddress,
+            labelText: 'Correo electrónico',
+            prefixIconData: Icons.email,
             validator: (value) {
               if (value == null || value.isEmpty) return 'Por favor, ingresa tu correo';
               if (!value.contains('@') || !value.contains('.')) return 'Ingresa un correo válido';
               return null;
             },
+            keyboardType: TextInputType.emailAddress,
           ),
+
           SizedBox(height: 16.h),
-          TextFormField(
+
+          AuthTextFormField(
             controller: _passwordController,
+            labelText: 'Contraseña',
+            prefixIconData: Icons.lock,
             obscureText: _obscurePassword,
-            decoration: InputDecoration(
-              labelText: 'Contraseña',
-              prefixIcon: const Icon(Icons.lock, color: primaryAuthColor),
-              suffixIcon: IconButton(
-                icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility, color: primaryAuthColor),
-                onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-              ),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.r),
-                borderSide: const BorderSide(color: primaryAuthColor, width: 2.0),
-              ),
-              contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 15.h),
+            suffixIcon: IconButton(
+              icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility, color: primaryAuthColor),
+              onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
             ),
-            style: TextStyle(fontSize: 16.sp),
             validator: (value) => (value == null || value.isEmpty) ? 'Por favor, ingresa tu contraseña' : null,
           ),
+
           SizedBox(height: 24.h),
+
           authProvider.isLoading
               ? const CircularProgressIndicator(color: primaryAuthColor)
-              : SizedBox(
-                  width: double.infinity,
-                  height: 50.h,
-                  child: ElevatedButton(
-                    onPressed: () => _login(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryAuthColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
-                    ),
-                    child: Text('Ingresar', style: GoogleFonts.jua(fontSize: 20.sp, color: Colors.white)),
-                  ),
+              : PrimaryAuthButton(
+                  text: 'Ingresar',
+                  onPressed: () => _login(context),
+                  backgroundColor: primaryAuthColor,
                 ),
           SizedBox(height: 16.h),
           Row(

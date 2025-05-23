@@ -7,7 +7,6 @@ class OverlayColumnScaffold extends StatelessWidget {
   final BorderRadiusGeometry? bottomColumnBorderRadius;
   final Color bottomColumnColor;
 
-  // Nuevos parámetros para la columna superior
   final String? topBackgroundImage;
   final Color? topBackgroundColor;
   final String? topBackgroundText;
@@ -38,14 +37,12 @@ class OverlayColumnScaffold extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Fondo de la columna superior (imagen, color o texto)
           SizedBox(
             height: size.height * topColumnHeightFactor,
             width: double.infinity,
             child: _buildTopBackground(),
           ),
 
-          // Contenido de la columna superior
           SizedBox(
             height: size.height * topColumnHeightFactor,
             child: Column(
