@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:huertix_project/features/auth/config/auth_provider.dart';
+import 'package:huertix_project/features/auth/presentation/providers/auth_provider.dart';
 import 'package:huertix_project/features/auth/data/auth_repository_impl.dart';
 import 'package:huertix_project/features/auth/data/firebase_auth_datasource.dart';
 import 'package:huertix_project/features/auth/domain/auth_repository.dart';
