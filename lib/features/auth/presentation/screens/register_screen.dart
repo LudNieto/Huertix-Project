@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:huertix_project/features/auth/presentation/providers/auth_provider.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/auth_screen_card.dart';
-import 'package:huertix_project/features/auth/presentation/login_screen.dart';
+import 'package:huertix_project/features/auth/presentation/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

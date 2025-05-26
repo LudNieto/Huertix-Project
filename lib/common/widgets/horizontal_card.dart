@@ -8,11 +8,11 @@ class HorizontalCard extends StatelessWidget {
   final double width;
   final double height;
   final Color color;
-  final String nombre;
+  final String name;
   final int cupos;
-  final String tamano;
-  final StatusType estado;
-  final String ubicacion;
+  final String size;
+  final StatusType state;
+  final String location;
   final String imageRoute;
   final double fontSize;
 
@@ -21,18 +21,18 @@ class HorizontalCard extends StatelessWidget {
     this.width = 320,
     this.height = 140,
     this.color = const Color(0xFF1E1E1E),
-    required this.nombre,
+    required this.name,
     required this.cupos,
-    required this.tamano,
-    required this.estado,
-    required this.ubicacion,
+    required this.size,
+    required this.state,
+    required this.location,
     required this.imageRoute,
-    this.fontSize = 16,
+    this.fontSize = 16.2,
   });
 
   // Método para obtener el color del estado
   Color _getEstadoColor(BuildContext context) {
-    switch (estado) {
+    switch (state) {
       case StatusType.disponible:
         return Colors.green;
       case StatusType.noDisponible:
@@ -46,7 +46,7 @@ class HorizontalCard extends StatelessWidget {
 
   // Método para obtener el texto del estado
   String _getEstadoText() {
-    switch (estado) {
+    switch (state) {
       case StatusType.disponible:
         return 'Disponible';
       case StatusType.noDisponible:
@@ -66,111 +66,44 @@ class HorizontalCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 6,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Sección de texto
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Nombre
-                  Text(
-                    nombre,
-                    style: GoogleFonts.jua(
-                      fontSize: fontSize * 1.2,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-
-                  // Detalles
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildDetailRow(Icons.group, '$cupos Cupos'),
-                      _buildDetailRow(Icons.aspect_ratio, tamano),
-                      _buildDetailRow(Icons.location_on, ubicacion),
-                    ],
-                  ),
-
-                  // Estado
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: _getEstadoColor(context),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      _getEstadoText(),
-                      style: GoogleFonts.jua(
-                        fontSize: fontSize * 0.7,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                name,
+                style: GoogleFonts.jua(fontSize: fontSize, color: Colors.white),
               ),
-            ),
+
+              SizedBox(height: height * 0.15),
+
+              Text(
+                location,
+                style: GoogleFonts.jua(
+                  fontSize: fontSize * 0.66,
+                  color: Colors.white,
+                ),
+              ),
+
+              Text(
+                '$cupos cupos',
+                style: GoogleFonts.jua(
+                  fontSize: fontSize * 0.66,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
-
-          // Sección de imagen
-          Expanded(
-            flex: 4,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              child: Image.network(
-                imageRoute,
-                fit: BoxFit.cover,
-                height: double.infinity,
-                errorBuilder:
-                    (context, error, stackTrace) => const Center(
-                      child: Icon(
-                        Icons.image_not_supported,
-                        color: Colors.white54,
-                      ),
-                    ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Widget auxiliar para construir filas de detalles
-  Widget _buildDetailRow(IconData icon, String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2.0),
-      child: Row(
-        children: [
-          Icon(icon, size: fontSize * 0.8, color: Colors.white70),
-          const SizedBox(width: 6),
-          Text(
-            text,
-            style: GoogleFonts.jua(
-              fontSize: fontSize * 0.7,
-              color: Colors.white,
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(width: width * 0.5, child: Image.asset(imageRoute)),
+            ],
           ),
         ],
       ),
