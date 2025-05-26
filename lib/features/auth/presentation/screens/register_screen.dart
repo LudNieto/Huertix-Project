@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:huertix_project/features/auth/config/auth_provider.dart';
+import 'package:huertix_project/features/auth/presentation/providers/auth_provider.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/auth_screen_card.dart';
 import 'package:huertix_project/features/auth/presentation/login_screen.dart';
 import 'package:provider/provider.dart';

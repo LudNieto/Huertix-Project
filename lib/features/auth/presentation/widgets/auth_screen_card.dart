@@ -41,7 +41,7 @@ class AuthScreenCard extends StatelessWidget {
           ),
 
           Positioned.fill(
-            child: Container(color: Colors.black.withOpacity(0.3)),
+            child: Container(color: Colors.black.withOpacity(0.2)),
           ),
 
           Center(
