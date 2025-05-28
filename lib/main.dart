@@ -11,16 +11,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await di.init();
-  runApp(const MyApp());
+  final AuthProvider authProvider = di.sl<AuthProvider>();
+  await authProvider.checkFirebaseSession();
+  runApp(MyApp(authProvider: authProvider));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final AuthProvider authProvider;
+  const MyApp({super.key, required this.authProvider});
   static const Size designScreenSize = Size(375, 812);
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider authProvider = di.sl<AuthProvider>();
     final appRouter = AppRouter(authProvider);
 
     return MultiProvider(

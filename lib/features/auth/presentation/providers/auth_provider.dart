@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:huertix_project/features/auth/domain/usecase/get_user_profile_usecase.dart';
 import 'package:huertix_project/features/auth/domain/usecase/login_usecase.dart';
@@ -28,11 +29,26 @@ class AuthProvider extends ChangeNotifier {
   AuthStatus _status = AuthStatus.initial;
   UserEntity? _user;
   String? _errorMessage;
+  int _currentStep = 0;
 
+  int get currentStep => _currentStep;
   AuthStatus get status => _status;
   UserEntity? get user => _user;
   String? get errorMessage => _errorMessage;
   bool get isLoading => _status == AuthStatus.loading;
+
+  Future<void> checkFirebaseSession() async {
+    _status = AuthStatus.loading;
+    notifyListeners();
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null) {
+      fetchUserProfile(firebaseUser.uid);
+    } else {
+      _status = AuthStatus.unauthenticated;
+      _user = null;
+    }
+    notifyListeners();
+  }
 
   Future<void> loginUser(String email, String password) async {
     _updateStatus(AuthStatus.loading);
@@ -125,5 +141,27 @@ class AuthProvider extends ChangeNotifier {
       }
       notifyListeners();
     }
+  }
+
+  void nextStep() {
+    _currentStep++;
+    notifyListeners();
+  }
+
+  void previousStep() {
+    if (_currentStep > 0) {
+      _currentStep--;
+      notifyListeners();
+    }
+  }
+
+  void goToStep(int step) {
+    _currentStep = step;
+    notifyListeners();
+  }
+
+  void resetStepper() {
+    _currentStep = 0;
+    notifyListeners();
   }
 }

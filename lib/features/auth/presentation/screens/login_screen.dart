@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:huertix_project/features/auth/presentation/providers/auth_provider.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/auth_screen_card.dart';
-import 'package:huertix_project/features/auth/presentation/screens/register_screen.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/primary_auth_button.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -127,12 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     authProvider.isLoading
                         ? null
                         : () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const RegisterScreen(),
-                            ),
-                          );
+                          context.goNamed("register");
                         },
                 child: Text(
                   'Regístrate',
