@@ -125,7 +125,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         children: [
           Text(
             'Crear Cuenta',
-            style: GoogleFonts.jua(
+            style: TextStyle(
               fontSize: 28.sp,
               fontWeight: FontWeight.bold,
               color: primaryAuthColor,
@@ -243,7 +243,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         child: Text(
                           'Siguiente',
-                          style: GoogleFonts.jua(
+                          style: TextStyle(
                             fontSize: 20.sp,
                             color: Colors.white,
                           ),
@@ -354,7 +354,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                             child: Text(
                               'Registrarse',
-                              style: GoogleFonts.jua(
+                              style: TextStyle(
                                 fontSize: 20.sp,
                                 color: Colors.white,
                               ),

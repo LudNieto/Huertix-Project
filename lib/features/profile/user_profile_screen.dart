@@ -3,6 +3,7 @@ import 'package:huertix_project/features/profile/userInfo.dart';
 import 'package:huertix_project/features/profile/cifras_text.dart';
 import 'package:huertix_project/common/widgets/horizontal_card.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class UserProfile extends StatelessWidget {
   final String? email;
@@ -88,7 +89,7 @@ class UserProfile extends StatelessWidget {
                               availableDays: availableDays,
                               textStyle: TextStyle(
                                 fontSize: 18,
-                                fontWeight: FontWeight.w700,
+                                fontWeight: FontWeight.w600,
                                 color: primaryAuthColor,
                               ),
                             ),
@@ -98,6 +99,7 @@ class UserProfile extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.green,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                             Text(
@@ -110,6 +112,20 @@ class UserProfile extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.green,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                //navegar al historial de Parcelas;
+                              },
+                              child: Text(
+                                'Ver más parcelas',
+                                style: TextStyle(
+                                  color: primaryAuthColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14.sp,
+                                ),
                               ),
                             ),
                             Column(

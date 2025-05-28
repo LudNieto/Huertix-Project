@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:huertix_project/features/profile/user_profile_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huertix_project/features/auth/presentation/providers/auth_provider.dart';
 import 'package:huertix_project/features/auth/domain/user_entity.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  static const Color primaryThemeColor = Color(0xFF085430); 
+  static const Color primaryThemeColor = Color(0xFF085430);
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +19,12 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Mi Huerto (${userRoleToString(user!.role)})', // Muestra el rol
-          style: GoogleFonts.jua(fontSize: 20.sp, color: Colors.white),
+          style: TextStyle(fontSize: 20.sp, color: Colors.white),
         ),
         backgroundColor: primaryThemeColor,
-        iconTheme: const IconThemeData(color: Colors.white), // Para el botón de atrás si viniera de otra pantalla
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ), // Para el botón de atrás si viniera de otra pantalla
         actions: [
           IconButton(
             icon: const Icon(Icons.logout, color: Colors.white),
@@ -41,7 +42,9 @@ class HomeScreen extends StatelessWidget {
           children: [
             Card(
               elevation: 4.sp,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r),
+              ),
               child: Padding(
                 padding: EdgeInsets.all(16.w),
                 child: Column(
@@ -49,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Text(
                       '¡Bienvenid@, ${user.fullName}!',
-                      style: GoogleFonts.jua(
+                      style: TextStyle(
                         fontSize: 22.sp,
                         fontWeight: FontWeight.bold,
                         color: primaryThemeColor,
@@ -58,10 +61,23 @@ class HomeScreen extends StatelessWidget {
                     SizedBox(height: 12.h),
                     _buildUserInfoRow(Icons.email, 'Correo:', user.email),
                     _buildUserInfoRow(Icons.phone, 'Teléfono:', user.phone),
-                    _buildUserInfoRow(Icons.location_city, 'Zona:', user.residentialZone),
-                    _buildUserInfoRow(Icons.calendar_today, 'Disponibilidad:', user.availabilityDays.join(', ')),
-                    if (user.previousExperience != null && user.previousExperience!.isNotEmpty)
-                      _buildUserInfoRow(Icons.eco, 'Experiencia:', user.previousExperience!),
+                    _buildUserInfoRow(
+                      Icons.location_city,
+                      'Zona:',
+                      user.residentialZone,
+                    ),
+                    _buildUserInfoRow(
+                      Icons.calendar_today,
+                      'Disponibilidad:',
+                      user.availabilityDays.join(', '),
+                    ),
+                    if (user.previousExperience != null &&
+                        user.previousExperience!.isNotEmpty)
+                      _buildUserInfoRow(
+                        Icons.eco,
+                        'Experiencia:',
+                        user.previousExperience!,
+                      ),
                   ],
                 ),
               ),
@@ -69,39 +85,69 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 20.h),
 
             if (user.role == UserRole.admin) ...[
-              Text("Panel de Administrador", style: GoogleFonts.jua(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+              Text(
+                "Panel de Administrador",
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 10.h),
               ElevatedButton.icon(
                 icon: const Icon(Icons.settings_applications),
                 label: const Text("Gestionar Zonas de Cultivo (TODO)"),
-                onPressed: () { /* Navegar a gestión de zonas */ },
+                onPressed: () {
+                  /* Navegar a gestión de zonas */
+                },
               ),
               SizedBox(height: 10.h),
               ElevatedButton.icon(
                 icon: const Icon(Icons.assignment),
                 label: const Text("Gestionar Tareas (TODO)"),
-                 onPressed: () { /* Navegar a gestión de tareas */ },
+                onPressed: () {
+                  /* Navegar a gestión de tareas */
+                },
               ),
             ] else if (user.role == UserRole.volunteer) ...[
-              Text("Panel de Voluntario", style: GoogleFonts.jua(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+              Text(
+                "Panel de Voluntario",
+                style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 10.h),
               ElevatedButton.icon(
                 icon: const Icon(Icons.grass),
                 label: const Text("Ver Zonas de Cultivo (TODO)"),
-                 onPressed: () { /* Navegar a Zonas de Cultivo */ },
+                onPressed: () {
+                  /* Navegar a Zonas de Cultivo */
+                },
               ),
               SizedBox(height: 10.h),
               ElevatedButton.icon(
                 icon: const Icon(Icons.history),
                 label: const Text("Mi Participación (TODO)"),
-                 onPressed: () { /* Navegar a Bitácora */ },
+                onPressed: () {
+                  /* Navegar a Bitácora */
+                },
+              ),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.history),
+                label: const Text("Mi Perfil"),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserProfile(),
+                    ),
+                  );
+                },
               ),
             ],
             SizedBox(height: 20.h),
             Center(
               child: Text(
                 "Más funcionalidades próximamente...",
-                style: TextStyle(fontSize: 14.sp, fontStyle: FontStyle.italic, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey,
+                ),
               ),
             ),
           ],
@@ -120,7 +166,11 @@ class HomeScreen extends StatelessWidget {
           SizedBox(width: 10.w),
           Text(
             label,
-            style: TextStyle(fontSize: 15.sp, fontWeight: FontWeight.bold, color: Colors.black87),
+            style: TextStyle(
+              fontSize: 15.sp,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
           ),
           SizedBox(width: 5.w),
           Expanded(

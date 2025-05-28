@@ -89,11 +89,16 @@ class CifrasText extends StatelessWidget {
             ),
           ],
         ),
+        SizedBox(height: 20),
         Text(
           'Días Disponibles',
-          style: TextStyle(fontSize: 20, color: Colors.green),
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.green,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-
+        SizedBox(height: spacing),
         Wrap(
           spacing: spacing / 2,
           runSpacing: spacing / 2,

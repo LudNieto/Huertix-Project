@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart'; // Asegúrate de tener este import
 
 class PrimaryAuthButton extends StatelessWidget {
   final String text;
@@ -28,10 +27,10 @@ class PrimaryAuthButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final double effectiveHeight = height.h; 
+    final double effectiveHeight = height.h;
     final double effectiveFontSize = fontSize ?? 20.sp;
-    final BorderRadius effectiveBorderRadius = borderRadius ?? BorderRadius.circular(10.r); 
+    final BorderRadius effectiveBorderRadius =
+        borderRadius ?? BorderRadius.circular(10.r);
 
     return SizedBox(
       width: width,
@@ -40,17 +39,14 @@ class PrimaryAuthButton extends StatelessWidget {
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor ?? Theme.of(context).primaryColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: effectiveBorderRadius,
-          ),
+          shape: RoundedRectangleBorder(borderRadius: effectiveBorderRadius),
           padding: EdgeInsets.symmetric(horizontal: 16.w),
         ),
         child: Text(
           text,
-          style: textStyle ?? GoogleFonts.jua(
-            fontSize: effectiveFontSize,
-            color: textColor,
-          ),
+          style:
+              textStyle ??
+              TextStyle(fontSize: effectiveFontSize, color: textColor),
         ),
       ),
     );
