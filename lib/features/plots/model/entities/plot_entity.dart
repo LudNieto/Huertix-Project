@@ -33,7 +33,8 @@ class PlotEntity extends Equatable {
   final PlotStatusEnum status;
   final DateTime createdAt;
   final int maxVolunteers;
-  final int volunteersCount;
+  final List<String> idVolunteers;
+  final List<String> idApplicantUsers;
 
 
   const PlotEntity({
@@ -45,7 +46,8 @@ class PlotEntity extends Equatable {
     required this.status,
     required this.createdAt,
     required this.maxVolunteers,
-    this.volunteersCount = 0,
+    this.idVolunteers = const [],
+    this.idApplicantUsers = const [],
   });
 
   @override
@@ -58,6 +60,34 @@ class PlotEntity extends Equatable {
         status,
         createdAt,
         maxVolunteers,
-        volunteersCount
+        idApplicantUsers,
+        idVolunteers,
       ];
+
+  PlotEntity copyWith({
+    String? id,
+    String? name,
+    String? size,
+    String? location,
+    String? currentCrop,
+    String? status,
+    DateTime? createdAt,
+    List<String>? applicantUserIds,
+    List<String>? volunteerUserIds,
+    int? maxVolunteers,
+  }) {
+    return PlotEntity(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      size: size ?? this.size,
+      location: location ?? this.location,
+      currentCrops: currentCrop ?? this.currentCrops,
+      status: stringToPlotStatusEnum(status) ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+      idApplicantUsers: applicantUserIds ?? this.idApplicantUsers,
+      idVolunteers: volunteerUserIds ?? this.idVolunteers,
+      maxVolunteers: maxVolunteers ?? this.maxVolunteers,
+    );
+  }
+
 }

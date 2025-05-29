@@ -66,7 +66,7 @@ class ActivityEntity extends Equatable {
   final TipoActividadEnum type;
   final DateTime dateTimePlanned;
   final EstadoActividadEnum status;
-  final String idAssignedResponsible;
+  final String? idAssignedResponsible;
 
   const ActivityEntity({
     required this.id,
@@ -75,7 +75,7 @@ class ActivityEntity extends Equatable {
     required this.type,
     required this.dateTimePlanned,
     required this.status,
-    required this.idAssignedResponsible,
+    this.idAssignedResponsible,
   });
 
   @override

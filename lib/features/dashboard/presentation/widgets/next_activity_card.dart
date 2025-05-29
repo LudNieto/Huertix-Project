@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
 import 'package:intl/intl.dart';
+
+enum ActivityStatus { pendiente, sinResponsable, completada }
 
 class NextActivityCard extends StatelessWidget {
   final DateTime date;
@@ -11,6 +14,7 @@ class NextActivityCard extends StatelessWidget {
   final Color activityDotColor;
   final String location;
   final Color locationDotColor;
+  final ActivityStatus activityStatus;
   final VoidCallback? onPlotTap;
 
   const NextActivityCard({
@@ -20,11 +24,38 @@ class NextActivityCard extends StatelessWidget {
     required this.cropType,
     required this.activityName,
     required this.activityTime,
+    required this.activityStatus,
     this.activityDotColor = const Color(0xFFE53935), // Rojo por defecto
     required this.location,
     this.locationDotColor = const Color(0xFF43A047), // Verde por defecto
     this.onPlotTap,
   });
+
+  Color _getActivityStatusColor() {
+    switch (activityStatus) {
+      case ActivityStatus.pendiente:
+        return Colors.orange;
+      case ActivityStatus.sinResponsable:
+        return Colors.red;
+      case ActivityStatus.completada:
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  String _getActivityStatusText() {
+    switch (activityStatus) {
+      case ActivityStatus.pendiente:
+        return 'Pendiente';
+      case ActivityStatus.sinResponsable:
+        return 'Sin Responsable';
+      case ActivityStatus.completada:
+        return 'Completada';
+      default:
+        return 'Desconocido';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +77,7 @@ class NextActivityCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Material(
-              color: Colors.green,
+              color: primaryAuthColor.withOpacity(0.3),
               child: InkWell(
                 onTap: onPlotTap,
                 child: Padding(
@@ -88,12 +119,12 @@ class NextActivityCard extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(16.w),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: 70.w,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           weekday,
@@ -109,7 +140,7 @@ class NextActivityCard extends StatelessWidget {
                         Text(
                           day,
                           style: TextStyle(
-                            color: Colors.black87,
+                            color: primaryAuthColor.withOpacity(0.8),
                             fontWeight: FontWeight.bold,
                             fontSize: 36.sp,
                             height: 1.0,
@@ -134,6 +165,25 @@ class NextActivityCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.w,
+                            vertical: 2.h,
+                          ),
+                          decoration: BoxDecoration(
+                            color: _getActivityStatusColor().withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(12.r),
+                          ),
+                          child: Text(
+                            _getActivityStatusText(),
+                            style: TextStyle(
+                              fontSize: 12.sp,
+                              color: _getActivityStatusColor(),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 12.w),
                         _buildDetailItem(
                           dotColor: activityDotColor,
                           title: activityName,

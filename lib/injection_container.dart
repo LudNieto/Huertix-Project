@@ -9,6 +9,9 @@ import 'package:huertix_project/features/auth/domain/usecases/get_user_profile_u
 import 'package:huertix_project/features/auth/domain/usecases/login_usecase.dart';
 import 'package:huertix_project/features/auth/domain/usecases/register_usecase.dart';
 import 'package:huertix_project/features/auth/domain/usecases/sign_out_usecase.dart';
+import 'package:huertix_project/features/plots/data/plot_repository_impl.dart';
+import 'package:huertix_project/features/plots/model/repositories/plot_repository.dart';
+import 'package:huertix_project/features/plots/model/usecases/create_plot_usecase.dart';
 
 
 final sl = GetIt.instance;
@@ -33,6 +36,11 @@ Future<void> init() async {
 
   sl.registerLazySingleton<FirebaseAuthDataSource>(() => FirebaseAuthDataSourceImpl(sl(), sl()));
 
+  sl.registerLazySingleton(() => CreatePlotUseCase(sl()));
+
+  sl.registerLazySingleton<PlotRepository>(
+      () => PlotRepositoryImpl(firestore: sl()));
+  
   // --- External ---
   sl.registerLazySingleton(() => fb_auth.FirebaseAuth.instance);
   sl.registerLazySingleton(() => FirebaseFirestore.instance);

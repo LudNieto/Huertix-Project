@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:huertix_project/features/profile/presentation/widgets/userInfo.dart';
 import 'package:huertix_project/features/profile/presentation/widgets/cifras_text.dart';
 import 'package:huertix_project/common/widgets/horizontal_card.dart';
@@ -16,25 +17,44 @@ class UserProfile extends StatelessWidget {
 
     final List<Map<String, dynamic>> parcelas = [
       {
-        'name': 'Parcela El Paraíso',
-        'cupos': 10,
-        'size': '500 m²',
-        'state': StatusType.disponible,
-        'location': 'Vereda El Roble',
-      },
-      {
-        'name': 'Parcela La Esperanza',
+        'name': 'Parcela A',
+        'type': 'Hortalizas',
         'cupos': 5,
-        'size': '300 m²',
-        'state': StatusType.sinCupos,
-        'location': 'Vereda La Cumbre',
+        'size': '50m²',
+        'state': StatusType.terminada,
+        'location': 'Barranquilla',
       },
       {
-        'name': 'Parcela Los Pinos',
-        'cupos': 8,
-        'size': '450 m²',
-        'state': StatusType.noDisponible,
-        'location': 'Finca Los Álamos',
+        'name': 'Parcela B',
+        'type': 'Frutales',
+        'cupos': 0,
+        'size': '80m²',
+        'state': StatusType.enProceso,
+        'location': 'Bogotá',
+      },
+      {
+        'name': 'Parcela C',
+        'type': 'Hierbas Aromáticas',
+        'cupos': 3,
+        'size': '60m²',
+        'state': StatusType.terminada,
+        'location': 'Bucaramanga',
+      },
+      {
+        'name': 'Parcela D',
+        'type': 'Verduras de Hoja',
+        'cupos': 2,
+        'size': '45m²',
+        'state': StatusType.disponible,
+        'location': 'Medellín',
+      },
+      {
+        'name': 'Parcela E',
+        'type': 'Tubérculos',
+        'cupos': 4,
+        'size': '70m²',
+        'state': StatusType.sinCupos,
+        'location': 'Cali',
       },
     ];
 
@@ -94,14 +114,7 @@ class UserProfile extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 20),
-                            Text(
-                              'Experiencia Previa',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.green,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                            Text('Experiencia Previa', style: titleStyle),
                             Text(
                               'Hervir awita, podar el cesped, ser pendja, tomar awa, regar las plantas',
                               style: TextStyle(fontSize: 16),
@@ -109,16 +122,10 @@ class UserProfile extends StatelessWidget {
                             SizedBox(height: 20),
                             Text(
                               'Parcelas en las que participa',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.green,
-                                fontWeight: FontWeight.w600,
-                              ),
+                              style: titleStyle,
                             ),
                             TextButton(
-                              onPressed: () {
-                                //navegar al historial de Parcelas;
-                              },
+                              onPressed: () => context.goNamed('fieldsHistory'),
                               child: Text(
                                 'Ver más parcelas',
                                 style: TextStyle(
@@ -133,13 +140,12 @@ class UserProfile extends StatelessWidget {
                               children:
                                   parcelas.map((parcela) {
                                     return HorizontalCard(
-                                      color: Colors.green,
+                                      type: parcela['type'],
                                       name: parcela['name'],
                                       cupos: parcela['cupos'],
                                       size: parcela['size'],
                                       state: parcela['state'],
                                       location: parcela['location'],
-                                      imageRoute: 'assets/images/login_bg.jpg',
                                     );
                                   }).toList(),
                             ),

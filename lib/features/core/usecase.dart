@@ -59,3 +59,22 @@ class UserProfileParams extends Equatable {
   @override
   List<Object> get props => [uid];
 }
+
+class CreatePlotParams extends Equatable {
+  final String name;
+  final String location;
+  final String size;
+  final String currentCrops;
+  final int maxVolunteers;
+
+  const CreatePlotParams({
+    required this.name,
+    required this.location,
+    required this.size,
+    required this.currentCrops,
+    required this.maxVolunteers,
+  });
+
+  @override
+  List<Object> get props => [name, location, size, currentCrops, maxVolunteers];
+}

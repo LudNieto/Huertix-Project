@@ -11,7 +11,8 @@ class PlotModel extends PlotEntity {
     required super.status,
     required super.createdAt,
     required super.maxVolunteers,
-    super.volunteersCount,
+    super.idApplicantUsers = const [],
+    super.idVolunteers = const [],
   });
 
   factory PlotModel.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
@@ -28,7 +29,8 @@ class PlotModel extends PlotEntity {
       status: stringToPlotStatusEnum(data['status'] as String?),
       createdAt: (data['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       maxVolunteers: (data['maxVolunteers'] as num?)?.toInt() ?? 0,
-      volunteersCount: (data['volunteersCount'] as num?)?.toInt() ?? 0,
+      idApplicantUsers: List<String>.from(data['idApplicantUsers'] as List<dynamic>? ?? []),
+      idVolunteers: List<String>.from(data['idVolunteers'] as List<dynamic>? ?? []),
     );
   }
 
@@ -41,7 +43,6 @@ class PlotModel extends PlotEntity {
       'status': plotStatusEnumToString(status),
       'createdAt': createdAt,
       'maxVolunteers': maxVolunteers,
-      'volunteersCount': volunteersCount ?? 0,
     };
   }
 }

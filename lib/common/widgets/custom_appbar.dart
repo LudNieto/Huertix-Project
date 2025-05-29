@@ -15,8 +15,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     final authProvider = Provider.of<AuthProvider>(context);
     final UserEntity? user = authProvider.user;
 
-    const Color gradientStartColor = Color(0xFF37A73D);
-    const Color gradientEndColor = Color(0xFF7EDF83);
+    const Color gradientStartColor = Color(0xFF085430);
+    const Color gradientEndColor = Color(0xFF37A73D);
 
     return AppBar(
       automaticallyImplyLeading: false,

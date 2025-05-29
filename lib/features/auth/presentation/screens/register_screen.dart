@@ -13,9 +13,9 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final List<GlobalKey<FormState>> _formKeys = [
-  GlobalKey<FormState>(),
-  GlobalKey<FormState>(),
-];
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+  ];
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -69,45 +69,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
     });
   }
 
-void _register(BuildContext context) {
-  bool allValid = _formKeys.every((key) => key.currentState?.validate() ?? false);
-
-  if (!allValid) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        duration: Duration(seconds: 2),
-        backgroundColor: Colors.redAccent,
-        content: Text('Por favor, completa correctamente todos los campos.'),
-      ),
+  void _register(BuildContext context) {
+    bool allValid = _formKeys.every(
+      (key) => key.currentState?.validate() ?? false,
     );
-    return;
-  }
 
-  if (_selectedDays.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        duration: Duration(seconds: 3),
-        backgroundColor: Colors.redAccent,
-        content: Text(
-          'Por favor, selecciona al menos un día de disponibilidad.',
+    if (!allValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          duration: Duration(seconds: 2),
+          backgroundColor: Colors.redAccent,
+          content: Text('Por favor, completa correctamente todos los campos.'),
         ),
-      ),
-    );
-    return;
-  }
+      );
+      return;
+    }
 
-  context.read<AuthProvider>().registerUser(
-    email: _emailController.text.trim(),
-    password: _passwordController.text.trim(),
-    fullName: _fullNameController.text.trim(),
-    phone: _phoneController.text.trim(),
-    residentialZone: _zoneController.text.trim(),
-    availabilityDays: _selectedDays,
-    previousExperience: _experienceController.text.trim().isNotEmpty
-        ? _experienceController.text.trim()
-        : null,
-  );
-}
+    if (_selectedDays.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          duration: Duration(seconds: 3),
+          backgroundColor: Colors.redAccent,
+          content: Text(
+            'Por favor, selecciona al menos un día de disponibilidad.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    context.read<AuthProvider>().registerUser(
+      email: _emailController.text.trim(),
+      password: _passwordController.text.trim(),
+      fullName: _fullNameController.text.trim(),
+      phone: _phoneController.text.trim(),
+      residentialZone: _zoneController.text.trim(),
+      availabilityDays: _selectedDays,
+      previousExperience:
+          _experienceController.text.trim().isNotEmpty
+              ? _experienceController.text.trim()
+              : null,
+    );
+  }
 
   static const Color primaryAuthColor = Color(0xFF085430);
 

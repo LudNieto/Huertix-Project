@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
 
 class EventCard extends StatelessWidget {
   final String imageUrl;
@@ -34,7 +35,7 @@ class EventCard extends StatelessWidget {
         elevation: 4.0,
         clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.r), 
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Stack(
           fit: StackFit.expand,
@@ -104,7 +105,7 @@ class EventCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 22.sp, 
+                        fontSize: 22.sp,
                         fontWeight: FontWeight.bold,
                         shadows: [
                           Shadow(
@@ -123,9 +124,7 @@ class EventCard extends StatelessWidget {
                       height: 2.h,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(
-                          1.r,
-                        ), 
+                        borderRadius: BorderRadius.circular(1.r),
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -181,20 +180,15 @@ class EventCard extends StatelessWidget {
                     SizedBox(height: 16.h),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF00AEEF),
+                        backgroundColor: primaryAuthColor,
                         padding: EdgeInsets.symmetric(
                           horizontal: 24.w,
                           vertical: 12.h,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            30.r,
-                          ),
+                          borderRadius: BorderRadius.circular(30.r),
                         ),
-                        minimumSize: Size(
-                          double.infinity,
-                          48.h,
-                        ),
+                        minimumSize: Size(double.infinity, 48.h),
                       ),
                       onPressed: onButtonPressed,
                       child: Text(
