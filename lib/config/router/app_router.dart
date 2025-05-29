@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:huertix_project/features/auth/presentation/providers/auth_provider.dart';
-import 'package:huertix_project/features/auth/presentation/screens/home_screen.dart';
+import 'package:huertix_project/config/provider/auth_provider.dart';
+import 'package:huertix_project/features/dashboard/presentation/home_screen.dart';
 import 'package:huertix_project/features/auth/presentation/screens/login_screen.dart';
 import 'package:huertix_project/features/auth/presentation/screens/register_screen.dart';
 

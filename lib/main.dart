@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huertix_project/config/router/app_router.dart';
-import 'package:huertix_project/features/auth/presentation/providers/auth_provider.dart';
+import 'package:huertix_project/config/provider/auth_provider.dart';
 import 'package:huertix_project/firebase_options.dart';
 import 'package:huertix_project/injection_container.dart' as di;
 import 'package:provider/provider.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:huertix_project/features/profile/userInfo.dart';
-import 'package:huertix_project/features/profile/cifras_text.dart';
+import 'package:huertix_project/features/profile/presentation/widgets/userInfo.dart';
+import 'package:huertix_project/features/profile/presentation/widgets/cifras_text.dart';
 import 'package:huertix_project/common/widgets/horizontal_card.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

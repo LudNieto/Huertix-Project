@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:huertix_project/features/auth/presentation/providers/auth_provider.dart';
+import 'package:huertix_project/config/provider/auth_provider.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/primary_auth_button.dart';
 import 'package:provider/provider.dart';
