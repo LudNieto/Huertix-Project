@@ -42,6 +42,7 @@ class HomeScreen extends StatelessWidget {
               activityTime: "10 AM - 11 AM",
               activityDotColor: Colors.green,
               location: "Huerto Urbano",
+              activityStatus: ActivityStatus.pendiente,
               locationDotColor: Colors.blueAccent,
               onPlotTap: () {
                 print("Parcela tocada");
@@ -52,6 +53,7 @@ class HomeScreen extends StatelessWidget {
             SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 DashboardButton(
                   icon: Icons.person,
@@ -60,13 +62,18 @@ class HomeScreen extends StatelessWidget {
                 ),
                 DashboardButton(
                   icon: Icons.history,
-                  label: 'Historial',
+                  label: 'Historial\nde Parcelas',
                   onPressed: () => context.goNamed('fieldsHistory'),
                 ),
                 DashboardButton(
                   icon: Icons.search,
                   label: 'Explorar',
                   onPressed: () => context.goNamed('login'),
+                ),
+                DashboardButton(
+                  icon: Icons.history_toggle_off_outlined,
+                  label: 'Historial\nde Actividades',
+                  onPressed: () => context.goNamed('actHistory'),
                 ),
               ],
             ),

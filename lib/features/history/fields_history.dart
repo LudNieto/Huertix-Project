@@ -60,6 +60,7 @@ class FieldsHistory extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Historial de Parcelas', style: titleStyle),
             SizedBox(height: 12.h),

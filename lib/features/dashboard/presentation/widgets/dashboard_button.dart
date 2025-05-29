@@ -34,6 +34,7 @@ class DashboardButton extends StatelessWidget {
             fontWeight: FontWeight.w700,
             color: Colors.black12.withOpacity(0.75),
           ),
+          textAlign: TextAlign.center,
         ),
       ],
     );

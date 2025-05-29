@@ -131,7 +131,6 @@ class HorizontalCard extends StatelessWidget {
                 Row(
                   children: [
                     Icon(Icons.location_city, color: estadoColor),
-
                     Text(
                       location,
                       style: TextStyle(

@@ -2,55 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huertix_project/common/widgets/custom_appbar.dart';
 import 'package:huertix_project/common/widgets/horizontal_card.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
+import 'package:huertix_project/features/dashboard/presentation/widgets/next_activity_card.dart';
 
 class ActivityHistory extends StatelessWidget {
   const ActivityHistory({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-
     // Lista de parcelas simulada
-    final List<Map<String, dynamic>> parcelas = [
+    final List<Map<String, dynamic>> activities = [
       {
-        'name': 'Parcela A',
-        'type': 'Hortalizas',
-        'cupos': 5,
-        'size': '50m²',
-        'state': StatusType.terminada,
-        'location': 'Barranquilla',
+        'date': DateTime(2025, 5, 28),
+        'plotName': 'Parcela 1',
+        'cropType': 'Tomates',
+        'activityName': 'Riego',
+        'activityTime': '10 AM - 11 AM',
+        'activityStatus': ActivityStatus.completada,
+        'activityDotColor': Colors.green,
+        'location': 'Huerto Urbano',
+        'locationDotColor': Colors.blueAccent,
       },
       {
-        'name': 'Parcela B',
-        'type': 'Frutales',
-        'cupos': 0,
-        'size': '80m²',
-        'state': StatusType.enProceso,
-        'location': 'Bogotá',
+        'date': DateTime(2025, 5, 27),
+        'plotName': 'Parcela 2',
+        'cropType': 'Lechuga',
+        'activityName': 'Fertilización',
+        'activityTime': '9 AM - 10 AM',
+        'activityStatus': ActivityStatus.completada,
+        'activityDotColor': Colors.orange,
+        'location': 'Huerto Norte',
+        'locationDotColor': Colors.cyan,
       },
       {
-        'name': 'Parcela C',
-        'type': 'Hierbas Aromáticas',
-        'cupos': 3,
-        'size': '60m²',
-        'state': StatusType.terminada,
-        'location': 'Bucaramanga',
-      },
-      {
-        'name': 'Parcela D',
-        'type': 'Verduras de Hoja',
-        'cupos': 2,
-        'size': '45m²',
-        'state': StatusType.disponible,
-        'location': 'Medellín',
-      },
-      {
-        'name': 'Parcela E',
-        'type': 'Tubérculos',
-        'cupos': 4,
-        'size': '70m²',
-        'state': StatusType.sinCupos,
-        'location': 'Cali',
+        'date': DateTime(2025, 5, 26),
+        'plotName': 'Parcela 3',
+        'cropType': 'Zanahorias',
+        'activityName': 'Cosecha',
+        'activityTime': '7 AM - 9 AM',
+        'activityStatus': ActivityStatus.pendiente,
+        'activityDotColor': Colors.red,
+        'location': 'Huerto Sur',
+        'locationDotColor': Colors.purple,
       },
     ];
 
@@ -59,32 +52,29 @@ class ActivityHistory extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Historial de Parcelas',
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: Colors.green,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
+            Text('Historial de Actividades', style: titleStyle),
             SizedBox(height: 12.h),
             Expanded(
               child: ListView.separated(
-                itemCount: parcelas.length,
+                itemCount: activities.length,
                 separatorBuilder:
                     (context, index) => const SizedBox(height: 20),
                 itemBuilder: (context, index) {
-                  final parcela = parcelas[index];
-                  return HorizontalCard(
-                    width: size.width * 0.9,
-                    height: 150,
-                    name: parcela['name'],
-                    type: parcela['type'],
-                    cupos: parcela['cupos'],
-                    size: parcela['size'],
-                    state: parcela['state'],
-                    location: parcela['location'],
+                  return NextActivityCard(
+                    date: DateTime.now(),
+                    plotName: "Parcela 1",
+                    cropType: "Tomates",
+                    activityName: "Riego",
+                    activityTime: "10 AM - 11 AM",
+                    activityStatus: ActivityStatus.completada,
+                    activityDotColor: Colors.green,
+                    location: "Huerto Urbano",
+                    locationDotColor: Colors.blueAccent,
+                    onPlotTap: () {
+                      print("Parcela tocada");
+                    },
                   );
                 },
               ),
