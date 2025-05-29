@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:huertix_project/common/widgets/custom_appbar.dart';
 import 'package:huertix_project/common/widgets/horizontal_card.dart';
+import 'package:huertix_project/common/widgets/scaffold_listview.dart';
 import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
 
 class FieldsHistory extends StatelessWidget {
@@ -55,38 +56,21 @@ class FieldsHistory extends StatelessWidget {
       },
     ];
 
-    return Scaffold(
-      appBar: CustomAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Historial de Parcelas', style: titleStyle),
-            SizedBox(height: 12.h),
-            Expanded(
-              child: ListView.separated(
-                itemCount: parcelas.length,
-                separatorBuilder:
-                    (context, index) => const SizedBox(height: 20),
-                itemBuilder: (context, index) {
-                  final parcela = parcelas[index];
-                  return HorizontalCard(
-                    width: size.width * 0.9,
-                    height: 150,
-                    name: parcela['name'],
-                    type: parcela['type'],
-                    cupos: parcela['cupos'],
-                    size: parcela['size'],
-                    state: parcela['state'],
-                    location: parcela['location'],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+    return ScaffoldListView<Map<String, dynamic>>(
+      title: 'Historial de Parcelas',
+      items: parcelas,
+      itemBuilder: (context, parcela) {
+        return HorizontalCard(
+          width: size.width * 0.9,
+          height: 150.h,
+          name: parcela['name'],
+          type: parcela['type'],
+          cupos: parcela['cupos'],
+          size: parcela['size'],
+          state: parcela['state'],
+          location: parcela['location'],
+        );
+      },
     );
   }
 }

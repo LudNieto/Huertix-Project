@@ -68,11 +68,11 @@ class HomeScreen extends StatelessWidget {
                 DashboardButton(
                   icon: Icons.search,
                   label: 'Explorar',
-                  onPressed: () => context.goNamed('login'),
+                  onPressed: () => context.goNamed('searchPlots'),
                 ),
                 DashboardButton(
                   icon: Icons.history_toggle_off_outlined,
-                  label: 'Historial\nde Actividades',
+                  label: 'Actividades',
                   onPressed: () => context.goNamed('actHistory'),
                 ),
               ],
