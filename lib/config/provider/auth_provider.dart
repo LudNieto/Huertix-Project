@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:huertix_project/features/auth/domain/usecase/get_user_profile_usecase.dart';
-import 'package:huertix_project/features/auth/domain/usecase/login_usecase.dart';
-import 'package:huertix_project/features/auth/domain/usecase/register_usecase.dart';
-import 'package:huertix_project/features/auth/domain/usecase/sign_out_usecase.dart';
+import 'package:huertix_project/features/auth/domain/usecases/get_user_profile_usecase.dart';
+import 'package:huertix_project/features/auth/domain/usecases/login_usecase.dart';
+import 'package:huertix_project/features/auth/domain/usecases/register_usecase.dart';
+import 'package:huertix_project/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:huertix_project/features/auth/domain/user_entity.dart';
 import 'package:huertix_project/features/core/error.dart';
 import 'package:huertix_project/features/core/usecase.dart';
