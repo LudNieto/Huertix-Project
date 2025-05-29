@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // Enum para manejar los estados
-enum StatusType { disponible, noDisponible, sinCupos }
+enum StatusType { disponible, noDisponible, sinCupos, terminada, enProceso }
 
 class HorizontalCard extends StatelessWidget {
   final double width;
   final double height;
   final Color color;
   final String name;
+  final String type;
   final int cupos;
   final String size;
   final StatusType state;
   final String location;
-  final String imageRoute;
   final double fontSize;
 
   const HorizontalCard({
     super.key,
     this.width = 320,
     this.height = 140,
-    this.color = const Color(0xFF1E1E1E),
+    this.color = Colors.grey,
     required this.name,
+    required this.type,
     required this.cupos,
     required this.size,
     required this.state,
     required this.location,
-    required this.imageRoute,
     this.fontSize = 16.2,
   });
 
@@ -39,8 +39,12 @@ class HorizontalCard extends StatelessWidget {
         return Colors.red;
       case StatusType.sinCupos:
         return Colors.orange;
+      case StatusType.terminada:
+        return Color(0xF666AD5D);
+      case StatusType.enProceso:
+        return Color(0xC055B0CC);
       default:
-        return Theme.of(context).colorScheme.primary;
+        return Colors.grey;
     }
   }
 
@@ -53,6 +57,10 @@ class HorizontalCard extends StatelessWidget {
         return 'No Disponible';
       case StatusType.sinCupos:
         return 'Sin Cupos';
+      case StatusType.terminada:
+        return 'Terminada';
+      case StatusType.enProceso:
+        return 'En Proceso';
       default:
         return 'Desconocido';
     }
@@ -60,52 +68,106 @@ class HorizontalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color estadoColor = _getEstadoColor(context);
+
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: color,
+        border: Border.all(
+          color: color.withOpacity(0.5), // Aquí pones el color del borde
+          width: 1.0, // Grosor del borde en píxeles
+        ),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                name,
-                style: GoogleFonts.jua(fontSize: fontSize, color: Colors.white),
-              ),
-
-              SizedBox(height: height * 0.15),
-
-              Text(
-                location,
-                style: GoogleFonts.jua(
-                  fontSize: fontSize * 0.66,
-                  color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Row(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  spacing: 8.w,
+                  children: [
+                    Text(
+                      '$name •',
+                      style: TextStyle(
+                        fontSize: fontSize,
+                        color: estadoColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 8.w,
+                        vertical: 2.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: estadoColor.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                      child: Text(
+                        _getEstadoText(),
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: estadoColor,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-
-              Text(
-                '$cupos cupos',
-                style: GoogleFonts.jua(
-                  fontSize: fontSize * 0.66,
-                  color: Colors.white,
+                Text(
+                  type,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: estadoColor,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(width: width * 0.5, child: Image.asset(imageRoute)),
-            ],
-          ),
-        ],
+                SizedBox(height: 15.h),
+                Row(
+                  children: [
+                    Icon(Icons.location_city, color: estadoColor),
+
+                    Text(
+                      location,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black12.withOpacity(0.7),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+
+                Text(
+                  '$cupos cupos',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.black12.withOpacity(0.7),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    Icon(Icons.grass, size: 20.w, color: estadoColor),
+                    Icon(Icons.agriculture, size: 80.w, color: estadoColor),
+                    Icon(Icons.grass, size: 20.w, color: estadoColor),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

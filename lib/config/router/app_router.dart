@@ -4,6 +4,7 @@ import 'package:huertix_project/config/provider/auth_provider.dart';
 import 'package:huertix_project/features/dashboard/presentation/screens/home_screen.dart';
 import 'package:huertix_project/features/auth/presentation/screens/login_screen.dart';
 import 'package:huertix_project/features/auth/presentation/screens/register_screen.dart';
+import 'package:huertix_project/features/history/fields_history.dart';
 import 'package:huertix_project/features/profile/presentation/screen/user_profile_screen.dart';
 
 class AppRouter {
@@ -63,6 +64,13 @@ class AppRouter {
         name: 'profile',
         builder: (BuildContext contex, GoRouterState state) {
           return const UserProfile();
+        },
+      ),
+      GoRoute(
+        path: '/fieldsHistory',
+        name: 'fieldsHistory',
+        builder: (BuildContext contex, GoRouterState state) {
+          return const FieldsHistory();
         },
       ),
     ],

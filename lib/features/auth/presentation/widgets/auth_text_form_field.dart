@@ -3,6 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 const Color primaryAuthColor = Color(0xFF085430);
+final TextStyle titleStyle = TextStyle(
+  fontSize: 24.sp,
+  fontWeight: FontWeight.bold,
+  color: primaryAuthColor,
+);
 
 class AuthTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -36,7 +41,7 @@ class AuthTextFormField extends StatelessWidget {
       labelText: labelText,
       prefixIcon: Icon(prefixIconData, color: primaryAuthColor),
       suffixIcon: suffixIcon,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r),),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10.r),
         borderSide: const BorderSide(color: primaryAuthColor, width: 2.0),
@@ -51,7 +56,7 @@ class AuthTextFormField extends StatelessWidget {
       keyboardType: keyboardType,
       obscureText: obscureText,
       validator: validator,
-      inputFormatters: inputFormatters, 
+      inputFormatters: inputFormatters,
     );
   }
 }

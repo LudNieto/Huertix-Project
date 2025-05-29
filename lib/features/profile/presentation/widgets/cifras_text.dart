@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
 
 class CifrasText extends StatelessWidget {
   final double hours;
@@ -35,14 +37,14 @@ class CifrasText extends StatelessWidget {
                   '$hours h',
                   style:
                       textStyle ??
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   'Horas de\nServicio',
                   style:
                       titleStyle ??
-                      TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -55,14 +57,14 @@ class CifrasText extends StatelessWidget {
                   '$endedFields',
                   style:
                       textStyle ??
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   'parcelas\nterminadas',
                   style:
                       titleStyle ??
-                      TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 ),
               ],
@@ -75,27 +77,27 @@ class CifrasText extends StatelessWidget {
                   '$endedActs',
                   style:
                       textStyle ??
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                      TextStyle(fontSize: 18.sp, fontWeight: FontWeight.w600),
                   textAlign: TextAlign.center,
                 ),
                 Text(
                   'Actividades\nCompletadas',
                   style:
                       titleStyle ??
-                      TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                      TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
                   textAlign: TextAlign.center,
                 ),
               ],
             ),
           ],
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 20.sp),
         Text(
           'Días Disponibles',
           style: TextStyle(
-            fontSize: 20,
-            color: Colors.green,
-            fontWeight: FontWeight.w600,
+            fontSize: 24.sp,
+            fontWeight: FontWeight.bold,
+            color: primaryAuthColor,
           ),
         ),
         SizedBox(height: spacing),
@@ -108,13 +110,13 @@ class CifrasText extends StatelessWidget {
                   label: Text(day),
                   labelStyle: const TextStyle(color: Colors.green),
                   backgroundColor: Colors.green.withOpacity(0.2),
-                  side: const BorderSide(color: Colors.green, width: 1),
+                  side: BorderSide(color: Colors.green, width: 1.w),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(20.r),
                   ),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 2,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 10.w,
+                    vertical: 2.h,
                   ),
                 );
               }).toList(),
