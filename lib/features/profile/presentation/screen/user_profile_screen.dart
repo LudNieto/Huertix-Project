@@ -139,7 +139,7 @@ class UserProfile extends StatelessWidget {
                                       size: parcela['size'],
                                       state: parcela['state'],
                                       location: parcela['location'],
-                                      imageRoute: 'assets/images/login_g.jpg',
+                                      imageRoute: 'assets/images/login_bg.jpg',
                                     );
                                   }).toList(),
                             ),

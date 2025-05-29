@@ -5,6 +5,7 @@ import 'package:huertix_project/config/router/app_router.dart';
 import 'package:huertix_project/config/provider/auth_provider.dart';
 import 'package:huertix_project/firebase_options.dart';
 import 'package:huertix_project/injection_container.dart' as di;
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -13,6 +14,7 @@ void main() async {
   await di.init();
   final AuthProvider authProvider = di.sl<AuthProvider>();
   await authProvider.checkFirebaseSession();
+  await initializeDateFormatting('es_ES', null);
   runApp(MyApp(authProvider: authProvider));
 }
 

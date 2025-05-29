@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:huertix_project/config/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:huertix_project/features/auth/domain/user_entity.dart';
@@ -67,7 +68,7 @@ class CustomDrawer extends StatelessWidget {
     required IconData icon,
     required String text,
     required GestureTapCallback onTap,
-    bool isActive =false,
+    bool isActive = false,
   }) {
     return ListTile(
       leading: Icon(
@@ -109,9 +110,7 @@ class CustomDrawer extends StatelessWidget {
                 _buildDrawerItem(
                   icon: Icons.home_filled,
                   text: 'Inicio',
-                  isActive:
-                      currentRouteName ==
-                      '/home',
+                  isActive: currentRouteName == '/home',
                   onTap: () {
                     Navigator.pop(context);
                     if (currentRouteName != '/home') {
@@ -133,7 +132,7 @@ class CustomDrawer extends StatelessWidget {
                   },
                 ),
                 _buildDrawerItem(
-                  icon: Icons.park_outlined,
+                  icon: Icons.grass_rounded,
                   text: 'Parcelas',
                   isActive: currentRouteName == '/plots',
                   onTap: () {
@@ -171,9 +170,9 @@ class CustomDrawer extends StatelessWidget {
                   isActive: currentRouteName == '/profile',
                   onTap: () {
                     Navigator.pop(context);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Ir a Perfil (TODO)")),
-                    );
+                    Future.microtask(() {
+                      context.go('/profile');
+                    });
                   },
                 ),
               ],
@@ -187,7 +186,10 @@ class CustomDrawer extends StatelessWidget {
               text: 'Cerrar sesión',
               onTap: () {
                 Navigator.pop(context);
-                context.read<AuthProvider>().logoutUser();
+                context.go('/login');
+                Future.microtask(() {
+                  context.read<AuthProvider>().logoutUser();
+                });
               },
             ),
           ),
