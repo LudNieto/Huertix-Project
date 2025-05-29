@@ -12,7 +12,7 @@ final TextStyle titleStyle = TextStyle(
 class AuthTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
-  final IconData prefixIconData;
+  final IconData? prefixIconData;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final bool obscureText;
@@ -25,7 +25,7 @@ class AuthTextFormField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.labelText,
-    required this.prefixIconData,
+    this.prefixIconData,
     this.validator,
     this.keyboardType,
     this.obscureText = false,
@@ -39,7 +39,10 @@ class AuthTextFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     final defaultDecoration = InputDecoration(
       labelText: labelText,
-      prefixIcon: Icon(prefixIconData, color: primaryAuthColor),
+      prefixIcon:
+          prefixIconData != null
+              ? Icon(prefixIconData, color: primaryAuthColor)
+              : null,
       suffixIcon: suffixIcon,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
       focusedBorder: OutlineInputBorder(

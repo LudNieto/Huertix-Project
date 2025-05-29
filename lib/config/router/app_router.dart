@@ -6,6 +6,7 @@ import 'package:huertix_project/features/auth/presentation/screens/login_screen.
 import 'package:huertix_project/features/auth/presentation/screens/register_screen.dart';
 import 'package:huertix_project/features/history/activity_history.dart';
 import 'package:huertix_project/features/history/fields_history.dart';
+import 'package:huertix_project/features/profile/presentation/screen/search_plots.dart';
 import 'package:huertix_project/features/profile/presentation/screen/user_profile_screen.dart';
 
 class AppRouter {
@@ -79,6 +80,13 @@ class AppRouter {
         name: 'actHistory',
         builder: (BuildContext contex, GoRouterState state) {
           return const ActivityHistory();
+        },
+      ),
+      GoRoute(
+        path: '/searchPlots',
+        name: 'searchPlots',
+        builder: (BuildContext contex, GoRouterState state) {
+          return const SearchPlots();
         },
       ),
     ],

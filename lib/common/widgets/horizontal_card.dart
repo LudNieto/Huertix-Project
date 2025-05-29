@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:huertix_project/features/auth/presentation/widgets/auth_text_form_field.dart';
 
 // Enum para manejar los estados
 enum StatusType { disponible, noDisponible, sinCupos, terminada, enProceso }
@@ -15,6 +16,8 @@ class HorizontalCard extends StatelessWidget {
   final StatusType state;
   final String location;
   final double fontSize;
+  final String? buttonText;
+  final VoidCallback? onPressed;
 
   const HorizontalCard({
     super.key,
@@ -28,6 +31,8 @@ class HorizontalCard extends StatelessWidget {
     required this.state,
     required this.location,
     this.fontSize = 16.2,
+    this.buttonText,
+    this.onPressed,
   });
 
   // Método para obtener el color del estado
@@ -128,6 +133,27 @@ class HorizontalCard extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 15.h),
+                Text(
+                  '$cupos cupos',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: Colors.black12.withOpacity(0.7),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.straighten, color: estadoColor),
+                    Text(
+                      size,
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black12.withOpacity(0.7),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
                 Row(
                   children: [
                     Icon(Icons.location_city, color: estadoColor),
@@ -141,21 +167,21 @@ class HorizontalCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
-                Text(
-                  '$cupos cupos',
-                  style: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.black12.withOpacity(0.7),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                if (buttonText != null && onPressed != null)
+                  IconButton(
+                    onPressed: onPressed,
+                    icon: Icon(
+                      Icons.add,
+                      color: primaryAuthColor.withOpacity(0.9),
+                    ),
+                    tooltip: buttonText,
+                  ),
                 Row(
                   children: [
                     Icon(Icons.grass, size: 20.w, color: estadoColor),

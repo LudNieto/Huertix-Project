@@ -7,12 +7,16 @@ class ScaffoldListView<T> extends StatelessWidget {
   final String title;
   final List<T> items;
   final Widget Function(BuildContext context, T item) itemBuilder;
+  final bool showFloatingBtn;
+  final VoidCallback? onFloatingBtnPressed;
 
   const ScaffoldListView({
     Key? key,
     required this.title,
     required this.items,
     required this.itemBuilder,
+    this.showFloatingBtn = false,
+    this.onFloatingBtnPressed,
   }) : super(key: key);
 
   @override
@@ -38,6 +42,14 @@ class ScaffoldListView<T> extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton:
+          showFloatingBtn
+              ? FloatingActionButton(
+                backgroundColor: primaryAuthColor,
+                onPressed: onFloatingBtnPressed,
+                child: const Icon(Icons.add, color: Colors.white),
+              )
+              : null,
     );
   }
 }
